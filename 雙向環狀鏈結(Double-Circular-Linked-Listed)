@@ -1,0 +1,173 @@
+class employee():
+    def __init__(self):
+        self.name = ''
+        self.num = ''
+        self.salary = ''
+        self.next = None
+        self.prev = None
+
+def insert(head, ptr, target, name, num, salary):
+    ptr = head
+    new = employee()
+    new.name = name
+    new.num = num
+    new.salary = salary
+    new.next = None
+    new.prev = None
+    while ptr.next != head:
+        if ptr.name == target:
+            break
+        else:
+            ptr = ptr.next
+    if ptr == head:
+        new.next = head.next
+        new.prev = head
+        head.next = new
+    elif ptr.next == head:
+        if ptr.name == target:
+            new.next = head
+            new.prev = ptr
+            ptr.next = new
+            head.prev = new
+        else:
+            new.next = head
+            new.prev = ptr
+            ptr.next = new
+            head.prev = new
+            head = new
+    else:
+        new.next = ptr.next
+        new.prev = ptr
+        ptr.next = new
+        ptr.next.prev = new
+    return head
+
+def delete(head, ptr):
+    prev = head
+    while prev.next != ptr:
+        prev = prev.next
+    
+    if ptr == head:
+        head = head.next
+        prev.next = head
+        head.prev = prev
+    else:
+        prev.next = ptr.next
+        ptr.next.prev = prev
+    return head
+
+def reverse(head):
+    last = head
+    ptr = head.next
+    prev = head
+    head = head.next
+    while head != last:
+        head = head.next
+        ptr.next = prev
+        prev.prev = ptr
+        prev = ptr
+        ptr = head
+    ptr.next = prev
+    prev.prev = ptr
+    head = prev
+    return head
+
+namedata = ['Allen', 'Scott', 'Marry', 'Jon', 'Mark', 'Ricky'
+            , 'Lisa', 'Jasica', 'Hanson', 'Amy', 'Bob', 'Jack']
+data = [[1001,32367],[1002,24388],[1003,27556],[1007,31299],
+        [1012, 42660],[1014,25676],[1018,44145],[1043,52182],
+        [1031,32769],[1037,21100],[1041,32196],[1046,25776]]
+
+head = employee()
+head.name = namedata[0]
+head.num = data[0][0]
+head.salary = data[0][1]
+head.next = None
+head.prev = None
+ptr = head
+
+for i in range(1, 12):
+    new = employee()
+    new.name = namedata[i]
+    new.num = data[i][0]
+    new.salary = data[i][1]
+    new.next = None
+    new.prev = None
+    ptr.next = new
+    new.prev = ptr
+    ptr = new
+    
+ptr.next = head
+head.prev = ptr
+
+ptr = head
+while 1:
+    print("Name: %s Num:%d Salary:%d" %(ptr.name, ptr.num, ptr.salary))
+    ptr = ptr.next
+    if head == ptr or head == head.next:
+        break
+    
+selection = '1'
+
+while selection != '0':
+    selection = input(('(0)To leave (1)To insert (2)To delete (3)To show the link \
+(4) To reverse the link: '))
+    if selection == '1':
+        target = input('Who to be inserted: ')
+        name = input('New Name: ')
+        num = int(input('New Num: '))
+        salary = int(input('New Salary: '))
+        head = insert(head, ptr, target, name, num, salary)
+        ptr = head
+        while 1:
+            print("Name: %s Num:%d Salary:%d" %(ptr.name, ptr.num, ptr.salary))
+            ptr = ptr.next
+            if head == ptr or head == head.next:
+                break
+    elif selection == '2':
+        target = input('Who to be deleted: ')
+        find = 0
+        while ptr.next != head:
+            if ptr.name == target:
+                find += 1
+                break
+            else:
+                ptr = ptr.next
+        if find or ptr.name == target:
+            head = delete(head, ptr)
+        else:
+            print('Target Not Found!!')
+        ptr = head
+        while 1:
+            print("Name: %s Num:%d Salary:%d" %(ptr.name, ptr.num, ptr.salary))
+            ptr = ptr.next
+            if head == ptr or head == head.next:
+                break
+    elif selection == '3':
+        ptr = head
+        while 1:
+            print("Name: %s Num:%d Salary:%d" %(ptr.name, ptr.num, ptr.salary))
+            ptr = ptr.next
+            if head == ptr or head == head.next:
+                break
+    elif selection == '4':
+        head = reverse(head)
+        ptr = head
+        while 1:
+            print("Name: %s Num:%d Salary:%d" %(ptr.name, ptr.num, ptr.salary))
+            ptr = ptr.next
+            if head == ptr or head == head.next:
+                break
+    elif selection == '0':
+        print('Thank you!!')
+        break
+    else:
+        print('Wrong Input!!')
+
+
+
+
+
+
+
+
